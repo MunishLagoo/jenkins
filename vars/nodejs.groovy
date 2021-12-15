@@ -1,10 +1,16 @@
-def call() {
+def call(Map params = [:]) {
+    def args :LinkedHashMap = [
+        COMPONENT: ''
+        LABEL : 'WORKSTATION'
+    ] 
+    args<< params
     pipeline {
-        agent any
+        agent {label params.LABEL}
         stages {
             stage('Compile') {
                 steps {
-                    sh 'echo Compile'
+                    sh "echo COMPONENT = ${params.COMPONENT}"
+                    sh "echo EX_COMP = ${EX_COMP}"
                 }
             }
             stage('Code Quality') {
@@ -13,6 +19,11 @@ def call() {
                 }
             }
             stage('Test Cases') {
+                steps {
+                    sh 'echo Test-Cases'
+                }
+            }
+             stage('Upload Artifacts') {
                 steps {
                     sh 'echo Test-Cases'
                 }
