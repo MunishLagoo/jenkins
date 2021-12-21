@@ -7,16 +7,16 @@ def call(Map params = [:]) {
     pipeline {
         agent {label params.LABEL}
         stages {
-            // stage('Labeling Build') {
-            //     steps {
-            //         script {
-            //           str = GIT_BRANCH.split('/').last()
-            //           addshortText background: 'yellow', color: 'black', borderColor:'yellow', text:"COMPONENT=${params.COMPONENT}"
+            stage('Labeling Build') {
+                steps {
+                    script {
+                      str = GIT_BRANCH.split('/').last()
+                       addshortText background: 'yellow', color: 'black', borderColor:'yellow', text:"COMPONENT=${params.COMPONENT}"
             //           //addshortText background: 'yellow', color: 'black', borderColor:'yellow', text:"APP_VERSION=${params.APP_VERSION}"
-            //           addshortText background: 'yellow', color: 'black', borderColor:'yellow', text:"BRANCH=${str}"
-            //         }
-            //     }
-            // }
+                       addshortText background: 'yellow', color: 'black', borderColor:'yellow', text:"BRANCH=${str}"
+                    }
+                }
+            }
             stage('Compile') {
                 steps {
                     sh "echo COMPONENT = ${params.COMPONENT}"
