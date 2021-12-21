@@ -35,6 +35,16 @@ def call(Map params = [:]) {
                     """
                 }
             }
+
+              stage('Check Code Quality gate') {
+                steps {
+                 sh """
+                    sleep 5
+                    sonar-quality-gate.sh admin admin123 172.31.88.250 ${params.COMPONENT}
+                    """
+                }
+            }
+
             stage('Test Cases') {
                 steps {
                     sh 'echo Test-Cases'
