@@ -24,7 +24,7 @@ folder('CI-Pipelines') {
   description('CI-Pipelines')
 }
 
-def component : ArrayList = ["catalogue","user","cart","shipping","payment","frontend"]
+def component = ["catalogue","user","cart","shipping","payment","frontend"]
 
 def count = (component.size() - 1)
 
