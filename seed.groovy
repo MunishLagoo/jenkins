@@ -50,7 +50,7 @@ pipelineJob("CI-Pipelines/${j}") {
            'name'('*/main')
          }
        }
-     }
+     } 
      'scriptPath'('Jenkinsfile')
      'lightweight'(true)
    }
