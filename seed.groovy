@@ -31,17 +31,21 @@ def count = (component.size() - 1)
 for (int i in 0..count) {
     def j = component[i]
 
-pipelineJob('CI-Pipelines/${j}') {
+pipelineJob("CI-Pipelines/${j}") {
  configure { flowdefinition ->
    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
        'userRemoteConfigs' {
          'hudson.plugins.git.UserRemoteConfig' {
-             'url'('https://github.com/MunishLagoo/${j}.git')
+             'url'("https://github.com/MunishLagoo/${j}.git")
         //    'url'('https://DevOps-Batches@dev.azure.com/DevOps-Batches/DevOps60/_git/frontend')
+         'refspec'('\'+refs/tags/*\':\'refs/remotes/origin/tags/*\'')
          }
        }
        'branches' {
+           'hudson.plugins.git.BranchSpec' {
+           'name'('*/tags/*')
+           }
          'hudson.plugins.git.BranchSpec' {
            'name'('*/main')
          }
