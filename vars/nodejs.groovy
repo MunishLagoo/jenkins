@@ -1,5 +1,5 @@
 def call(Map params = [:]) {
-    def args LinkedHashMap = [
+    def args = [
         COMPONENT: ''
         LABEL : 'WORKSTATION'
     ] 
