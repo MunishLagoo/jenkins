@@ -28,11 +28,23 @@ def call(Map params = [:]) {
                     """
                 }
             }
-            stage('Code Quality') {
+          stage('Code Quality') {
                 steps {
-                    sh 'echo Quality'
+                 sh """
+                    sonar-scanner -Dsonar.projectKey=${params.COMPONENT} -Dsonar.java.binaries=target/.  -Dsonar.host.url=http://172.31.88.250:9000  -Dsonar.login=00caade48d44c443c8535371e6ffdd640497f71e
+                    """
                 }
             }
+
+              stage('Check Code Quality gate') {
+                steps {
+                 sh """
+                    sleep 5
+                    sonar-quality-gate.sh admin admin123 172.31.88.250 ${params.COMPONENT}
+                    """
+                }
+            }
+
             stage('Test Cases') {
                 steps {
                     sh 'echo Test-Cases'
