@@ -12,7 +12,7 @@ def call(Map params = [:]) {
                     script {
                       str = GIT_BRANCH.split('/').last()
                        addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"COMPONENT=${params.COMPONENT}"
-            //           //addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"APP_VERSION=${params.APP_VERSION}"
+            //           addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"APP_VERSION=${params.APP_VERSION}"
                        addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"BRANCH=${str}"
                     }
                 }
@@ -20,7 +20,6 @@ def call(Map params = [:]) {
             stage('Compile') {
                 steps {
                     sh "echo COMPONENT = ${params.COMPONENT}"
-                    //sh "echo EX_COMP = ${EX_COMP}"
                 }
             }
             stage('Code Quality') {
@@ -36,7 +35,7 @@ def call(Map params = [:]) {
              stage('Upload Artifacts') {
                  when {
                      expression {
-                         sh ([returnstdout: true, script:'echo ${GIT_BRANCH}| grep tags || true'])
+                         sh ([returnStdout: true, script:'echo ${GIT_BRANCH} | grep tags || true'])
                          }
                  }
                 steps {
@@ -44,5 +43,10 @@ def call(Map params = [:]) {
                 }
             }
         }
+      post {
+          always {
+              cleanWs()
+          }
+      }  
     }
 }
