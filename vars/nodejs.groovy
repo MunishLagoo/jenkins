@@ -63,11 +63,10 @@ def call(Map params = [:]) {
                 steps {                    
                     sh """
                        GIT_TAG=`echo ${GIT_BRANCH} | awk -F / '{print \$NF}'`
-                       echo \${GIT_TAG}
                        echo \${GIT_TAG} > version
                        zip -r ${params.COMPONENT}-\${GIT_TAG}.zip node_modules server.js version
                        echo "uploading artifacts to Nexus"
-                       curl -v -u ${NEXUS} --upload-file ${params.COMPONENT} -\${GIT_TAG}.zip http://172.31.10.172:8081/repository/${params.COMPONENT}/${params.COMPONENT}-\${GIT_TAG}.zip
+                       curl -v -u ${NEXUS} --upload-file ${params.COMPONENT}-\${GIT_TAG}.zip http://172.31.10.172:8081/repository/${params.COMPONENT}/${params.COMPONENT}-\${GIT_TAG}.zip
                       """
                 }
             }
