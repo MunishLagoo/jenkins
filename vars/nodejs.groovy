@@ -52,13 +52,17 @@ def call(Map params = [:]) {
                 }
             }
              stage('Upload Artifacts') {
-                 when {
-                     expression {
-                         sh ([returnStdout: true, script:'echo ${GIT_BRANCH} | grep tags || true'])
-                         }
-                 }
+                //  when {
+                //      expression {
+                //          sh ([returnStdout: true, script:'echo ${GIT_BRANCH} | grep tags || true'])
+                //          }
+                //  }
                 steps {
-                    sh 'echo Test-Cases'
+                    sh """
+                       GIT_TAG=`echo ${GIT_BRANCH}|awk -F/'{print\$NF}'`
+                       echo \${GIT_TAG} > version
+                       zip -r ${params.COMPONENT}-\${GIT_TAG}.zip node_modules server.js version
+                    """
                 }
             }
         }
