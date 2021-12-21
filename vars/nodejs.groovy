@@ -20,7 +20,7 @@ def call(Map params = [:]) {
             stage('Compile') {
                 steps {
                     sh "echo COMPONENT = ${params.COMPONENT}"
-                    sh "echo EX_COMP = ${EX_COMP}"
+                    //sh "echo EX_COMP = ${EX_COMP}"
                 }
             }
             stage('Code Quality') {
