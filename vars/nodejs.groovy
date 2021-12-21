@@ -1,6 +1,6 @@
 def call(Map params = [:]) {
     def args = [
-        COMPONENT: ''
+        COMPONENT: '',
         LABEL : 'WORKSTATION'
     ] 
     args<< params
