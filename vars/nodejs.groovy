@@ -17,9 +17,15 @@ def call(Map params = [:]) {
                     }
                 }
             }
-            stage('Compile') {
+            stage('Download NodeJS Dependencies') {
                 steps {
-                    sh "echo COMPONENT = ${params.COMPONENT}"
+                    sh """
+                    echo "+++ Before"
+                    ls -l
+                    npm install
+                    echo "+++ after"
+                    ls -l
+                    """"
                 }
             }
             stage('Code Quality') {
