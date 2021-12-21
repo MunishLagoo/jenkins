@@ -25,7 +25,7 @@ def call(Map params = [:]) {
                     npm install
                     echo "+++ after"
                     ls -l
-                    """"
+                    """
                 }
             }
             stage('Code Quality') {
