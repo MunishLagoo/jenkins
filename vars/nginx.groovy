@@ -15,7 +15,7 @@ def call(Map params = [:]) {
                     script {
                       str = GIT_BRANCH.split('/').last()
                        addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"COMPONENT=${params.COMPONENT}"
-                       addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"APP_VERSION=${params.APP_VERSION}"
+                   //    addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"APP_VERSION=${params.APP_VERSION}"
                        addShortText background: 'yellow', color: 'black', borderColor:'yellow', text:"BRANCH=${str}"
                     }
                 }
