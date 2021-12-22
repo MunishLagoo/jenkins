@@ -1,9 +1,9 @@
 pipeline {
     agent any
     parameters{
-        string(name: 'ENV', default value: '', description:'which Environment?')
-        string(name: 'APP_VERSION', default value: '', description:'which version of APP?')
-        string(name: 'COMPONENT', default value: '', description:'which APP COMPONENT?')
+        string(name: 'ENV', defaultValue: '', description:'which Environment?')
+        string(name: 'APP_VERSION', defaultValue: '', description:'which version of APP?')
+        string(name: 'COMPONENT', defaultValue: '', description:'which APP COMPONENT?')
     }
     environment {
         NEXUS= credentials("NEXUS")
