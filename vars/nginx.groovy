@@ -37,8 +37,7 @@ def call(Map params = [:]) {
                          sh ([returnStdout: true, script:'echo ${GIT_BRANCH} | grep tags || true'])
                          }
                  }
-                steps {
-                    steps {                    
+                steps {                    
                     sh """
                        GIT_TAG=`echo ${GIT_BRANCH} | awk -F / '{print \$NF}'`
                        echo \${GIT_TAG} > version
@@ -49,7 +48,7 @@ def call(Map params = [:]) {
                        curl -v -u ${NEXUS} --upload-file ${params.COMPONENT}-\${GIT_TAG}.zip http://172.31.10.172:8081/repository/${params.COMPONENT}/${params.COMPONENT}-\${GIT_TAG}.zip
                       """
                 }
-                }
+                
             }
         }
       post {
