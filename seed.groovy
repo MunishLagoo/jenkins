@@ -103,7 +103,7 @@ pipelineJob('Mutable/Infra-Create') {
          }
        }
      }
-     'scriptPath'('Jenkinsfile-destroy-mutable-infra')
+     'scriptPath'('Jenkinsfile-create-mutable-infra')
      'lightweight'(true)
    }
  }
