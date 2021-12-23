@@ -14,6 +14,25 @@ pipeline {
             dir('terraform') {
                 git branch: 'main',url:'https://github.com/MunishLagoo/test-Terraform-mutable.git'
                  }
+            dir('frontend'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/frontend.git'
+            }   
+            dir('catalogue'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/catalogue.git'
+            }
+            dir('user'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/user.git'
+            }
+            dir('shipping'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/shipping.git'
+            }
+            dir('payment'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/payment.git'
+            }
+            dir('cart'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/cart.git'
+            }  
+            //steps     
              }
          }
      stage('VPC') {
@@ -51,6 +70,77 @@ pipeline {
                  }
              }
          }
-      }    
+      }   
+
+     stage('APP-COMPONENTS') {
+         parallel{
+           stage('CART') {
+             steps{
+              dir('cart') {
+                sh '''
+                cd terraform-mutable
+                make dev-apply
+                '''
+              }
+             }
+           }
+            stage('CATALOGUE') {
+             steps {
+              dir('catalogue'){
+               sh '''
+                 cd terraform-mutable
+                 make dev-apply
+                '''
+              }
+             }
+           }
+            stage('USER') {
+              steps {
+                dir('user') {
+                 sh '''
+                  cd terraform-mutable
+                  make dev-apply
+                 '''
+              }
+             }
+           }
+            stage('SHIPPING') {
+              steps {
+                dir ('shipping') {
+                  sh '''
+                   cd terraform-mutable
+                   make dev-apply
+                  '''
+                }
+              }
+           }
+            stage('PAYMENT') {
+              steps {
+                dir('payment') {
+                  sh '''
+                    cd terraform-mutable
+                    make dev-apply
+                   '''                
+                }
+              }
+           }
+      //Parallel     
+         }
+     //App-COMPONENT    
+     }
+    stage ('FRONTEND') {
+      steps {
+        dir ('frontend') {
+         sh '''
+           cd terraform-mutable
+           make dev-apply
+         '''
+        }
+      }
+      
+}
+
+  //stages     
     } 
+// pipeline    
 }
