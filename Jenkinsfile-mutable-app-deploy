@@ -36,7 +36,7 @@ pipeline {
             git branch:'main', url:'https://github.com/MunishLagoo/${COMPONENT}.git'
             sh '''
              cd terraform-mutable
-             //send paramets to TF Jobs
+             echo "send paramets to TF Jobs"
              export TF_VAR_VERSION = ${APP_VERSION}
              export TF_VAR_NEXUS_USER = ${NEXUS_USR}
              export TF_VAR_NEXUS_PASS = ${NEXUS_PSW}
