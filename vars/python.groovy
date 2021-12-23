@@ -43,7 +43,7 @@ def call(Map params = [:]) {
                        echo \${GIT_TAG} > version
                        zip -r ${params.COMPONENT}-\${GIT_TAG}.zip *.py requirements.txt ${params.COMPONENT}.ini version
                        echo "uploading artifacts to Nexus"
-                       curl -v -u ${NEXUS} --upload-file ${params.COMPONENT}-\${GIT_TAG}.zip http://172.31.10.172:8081/repository/${params.COMPONENT}/${params.COMPONENT}-\${GIT_TAG}.zip
+                       curl -f -v -u ${NEXUS} --upload-file ${params.COMPONENT}-\${GIT_TAG}.zip http://172.31.10.172:8081/repository/${params.COMPONENT}/${params.COMPONENT}-\${GIT_TAG}.zip
                       """
                 }
             }
