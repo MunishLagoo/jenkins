@@ -33,7 +33,7 @@ pipeline {
         }
     stage('App Deployment') {
         steps {
-            git branch:'main', url:'https://github.com/MunishLagoo/"${COMPONENT}".git'
+            git branch:'main', url:'https://github.com/MunishLagoo/${COMPONENT}.git'
             sh '''
              cd terraform-mutable
              //send paramets to TF Jobs
