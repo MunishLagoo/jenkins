@@ -8,6 +8,11 @@ pipeline {
     environment {
         NEXUS= credentials("NEXUS")
     }
+
+    options {
+        ansiColor('xterm')
+     }
+     
     stages {
         stage('Labeling Build') {
             steps {

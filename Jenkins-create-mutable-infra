@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+    environment {
+        NEXUS = credentials("NEXUS")
+    }
+
+    options {
+        ansiColor('xterm')
+    }
+
+    stages {
+     stage('Repo Clone') {
+        steps {
+            dir('terraform') {
+                git branch: 'main',url:'https://github.com/MunishLagoo/test-Terraform-mutable.git'
+                 }
+             }
+         }
+     stage('VPC') {
+         steps {
+            dir('terraform') {
+               sh '''
+                 cd vpc 
+                 make dev-apply
+                 ''' 
+                 } 
+             }
+         }
+
+     stage('DB-and-ALB') {
+         parallel{
+             stage('DB') {
+                 steps {
+                     dir('terraform') {
+                         sh '''
+                         cd db 
+                         make dev-apply
+                         '''
+                     }
+                 }
+             }
+
+              stage('ALB') {
+                 steps {
+                     dir('terraform') {
+                         sh '''
+                         cd alb 
+                         make dev-apply
+                         '''
+                     }
+                 }
+             }
+         }
+      }    
+    } 
+}
