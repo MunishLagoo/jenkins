@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters{
+      string(name:'ENV', defaultValue:'',description:'Which Environment?')
+    }
     environment {
         NEXUS = credentials("NEXUS")
     }
@@ -40,7 +43,7 @@ pipeline {
             dir('terraform') {
                sh '''
                  cd vpc 
-                 make dev-apply
+                 make ${ENV}-apply
                  ''' 
                  } 
              }
@@ -53,7 +56,7 @@ pipeline {
                      dir('terraform') {
                          sh '''
                          cd db 
-                         make dev-apply
+                         make ${ENV}-apply
                          '''
                      }
                  }
@@ -64,7 +67,7 @@ pipeline {
                      dir('terraform') {
                          sh '''
                          cd alb 
-                         make dev-apply
+                         make ${ENV}-apply
                          '''
                      }
                  }
@@ -79,7 +82,7 @@ pipeline {
               dir('catalogue'){
                sh '''
                  cd terraform-mutable
-                 make dev-apply
+                 make ${ENV}-apply
                 '''
               }
              }
@@ -89,7 +92,7 @@ pipeline {
                 dir('user') {
                  sh '''
                   cd terraform-mutable
-                  make dev-apply
+                  make ${ENV}-apply
                  '''
               }
              }
@@ -104,7 +107,7 @@ pipeline {
               dir('cart') {
                 sh '''
                 cd terraform-mutable
-                make dev-apply
+                make ${ENV}-apply
                 '''
                }
              }
@@ -117,7 +120,7 @@ pipeline {
               dir('shipping'){
                sh '''
                  cd terraform-mutable
-                 make dev-apply
+                 make ${ENV}-apply
                 '''
               }
              }
@@ -127,7 +130,7 @@ pipeline {
               dir('payment'){
                sh '''
                  cd terraform-mutable
-                 make dev-apply
+                 make ${ENV}-apply
                 '''
               }
              }
@@ -140,7 +143,7 @@ pipeline {
         dir ('frontend') {
          sh '''
            cd terraform-mutable
-           make dev-apply
+           make ${ENV}-apply
          '''
         }
       }   
