@@ -37,7 +37,7 @@ pipeline {
             sh '''
              cd terraform-mutable
              echo "send paramets to TF Jobs"
-             export TF_VAR_VERSION=${APP_VERSION}
+             export TF_VAR_APP_VERSION=${APP_VERSION}
              export TF_VAR_NEXUS_USER=${NEXUS_USR}
              export TF_VAR_NEXUS_PASS=${NEXUS_PSW}
              make ${ENV}-apply
