@@ -70,6 +70,21 @@ def call(Map params = [:]) {
                       """
                 }
             }
+
+             stage ('App Deployment-Dev') {
+                steps {
+                  script{
+                    GIT_TAG = GIT_BRANCH.split('/').last()
+                 }
+                build job: 'Mutable/App-Deploy', parameters: [
+                  string(name: 'ENV', value: 'dev'), 
+                  string(name: 'APP_VERSION', value: "${GIT_TAG}"), 
+                  string(name: 'COMPONENT', value: "${params.COMPONENT}")
+                 ]
+             }
+         }
+
+
         }
       post {
           always {

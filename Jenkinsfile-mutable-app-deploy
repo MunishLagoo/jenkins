@@ -29,5 +29,20 @@ pipeline {
                 sh '''curl -f -u ${NEXUS} -x GET "http://172.31.10.172:8081/service/rest/v1/components?repository=${COMPONENT}" -H "accept:application/json" | jq ".items[].name" | grep ${APP_VERSION}'''
             }
         }
+    stage('App Deployment') {
+        steps {
+            git branch:'main', url:'https://github.com/MunishLagoo/"${COMPONENT}".git'
+            sh '''
+             cd terraform-mutable
+             //send paramets to TF Jobs
+             export TF_VAR_VERSION = ${APP_VERSION}
+             export TF_VAR_NEXUS_USER = ${NEXUS_usw}
+             export TF_VAR_NEXUS_PASS = ${NEXUS_psw}
+             make ${ENV}-apply
+            '''
+        }
     }
+   //stages     
+    }
+//pipeline    
 }
