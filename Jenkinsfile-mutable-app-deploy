@@ -12,7 +12,7 @@ pipeline {
     options {
         ansiColor('xterm')
      }
-     
+
     stages {
         stage('Labeling Build') {
             steps {
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Check Artifacts') {
             steps {
-                sh '''curl -u ${NEXUS} -x GET "http://172.31.10.172:8081/service/rest/v1/components?repository=${COMPONENT}" -H "accept:application/json" | jq ".items[].name" | grep ${APP_VERSION}'''
+                sh '''curl -f -u ${NEXUS} -x GET "http://172.31.10.172:8081/service/rest/v1/components?repository=${COMPONENT}" -H "accept:application/json" | jq ".items[].name" | grep ${APP_VERSION}'''
             }
         }
     }

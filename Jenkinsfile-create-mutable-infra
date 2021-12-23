@@ -72,19 +72,9 @@ pipeline {
          }
       }   
 
-     stage('APP-COMPONENTS') {
+     stage('APP-COMPONENTS_CATALOGUE_USER') {
          parallel{
-           stage('CART') {
-             steps{
-              dir('cart') {
-                sh '''
-                cd terraform-mutable
-                make dev-apply
-                '''
-              }
-             }
-           }
-            stage('CATALOGUE') {
+          stage('CATALOGUE') {
              steps {
               dir('catalogue'){
                sh '''
@@ -104,30 +94,49 @@ pipeline {
               }
              }
            }
-            stage('SHIPPING') {
-              steps {
-                dir ('shipping') {
-                  sh '''
-                   cd terraform-mutable
-                   make dev-apply
-                  '''
-                }
-              }
-           }
-            stage('PAYMENT') {
-              steps {
-                dir('payment') {
-                  sh '''
-                    cd terraform-mutable
-                    make dev-apply
-                   '''                
-                }
-              }
-           }
-      //Parallel     
+     //Parallel     
          }
      //App-COMPONENT    
      }
+
+      stage('APP-COMPONENTS_CART') {
+           stage('CART') {
+             steps{
+              dir('cart') {
+                sh '''
+                cd terraform-mutable
+                make dev-apply
+                '''
+              }
+             }
+           }
+      }
+
+       stage('APP-COMPONENTS_SHIPPING_PAYMENT') {
+         parallel{
+          stage('SHIPPING') {
+             steps {
+              dir('shipping'){
+               sh '''
+                 cd terraform-mutable
+                 make dev-apply
+                '''
+              }
+             }
+           }
+            stage('PAYMENT') {
+             steps {
+              dir('payment'){
+               sh '''
+                 cd terraform-mutable
+                 make dev-apply
+                '''
+              }
+             }
+           }
+         }
+       }
+
     stage ('FRONTEND') {
       steps {
         dir ('frontend') {
@@ -136,8 +145,7 @@ pipeline {
            make dev-apply
          '''
         }
-      }
-      
+      }   
 }
 
   //stages     
