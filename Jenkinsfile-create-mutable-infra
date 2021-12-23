@@ -72,7 +72,7 @@ pipeline {
          }
       }   
 
-     stage('APP-COMPONENTS_CATALOGUE_USER') {
+     stage('APP-COMPONENTS_CATALOGUE-and-USER') {
          parallel{
           stage('CATALOGUE') {
              steps {
@@ -100,19 +100,17 @@ pipeline {
      }
 
       stage('APP-COMPONENTS_CART') {
-           stage('CART') {
-             steps{
+           steps{
               dir('cart') {
                 sh '''
                 cd terraform-mutable
                 make dev-apply
                 '''
-              }
+               }
              }
-           }
       }
-
-       stage('APP-COMPONENTS_SHIPPING_PAYMENT') {
+      
+      stage('APP-COMPONENTS_SHIPPING-and-PAYMENT') {
          parallel{
           stage('SHIPPING') {
              steps {
