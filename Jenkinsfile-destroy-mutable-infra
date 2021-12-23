@@ -1,0 +1,157 @@
+pipeline {
+    agent any
+    environment {
+        NEXUS = credentials("NEXUS")
+    }
+
+    options {
+        ansiColor('xterm')
+    }
+
+    stages {
+     stage('Repo Clone') {
+        steps {
+            dir('terraform') {
+                git branch: 'main',url:'https://github.com/MunishLagoo/test-Terraform-mutable.git'
+                 }
+            dir('frontend'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/frontend.git'
+            }   
+            dir('catalogue'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/catalogue.git'
+            }
+            dir('user'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/user.git'
+            }
+            dir('shipping'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/shipping.git'
+            }
+            dir('payment'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/payment.git'
+            }
+            dir('cart'){
+            git branch:'main', url: 'https://github.com/MunishLagoo/cart.git'
+            }  
+            //steps     
+           }
+        }
+     
+
+stage ('FRONTEND') {
+      steps {
+        dir ('frontend') {
+         sh '''
+           cd terraform-mutable
+           make dev-destroy
+         '''
+        }
+      }   
+}
+
+stage('APP-COMPONENTS_SHIPPING-and-PAYMENT') {
+         parallel{
+          stage('SHIPPING') {
+             steps {
+              dir('shipping'){
+               sh '''
+                 cd terraform-mutable
+                 make dev-destroy
+                '''
+              }
+             }
+           }
+            stage('PAYMENT') {
+             steps {
+              dir('payment'){
+               sh '''
+                 cd terraform-mutable
+                 make dev-destroy
+                '''
+              }
+             }
+           }
+         }
+       }
+
+      stage('APP-COMPONENTS_CART') {
+           steps{
+              dir('cart') {
+                sh '''
+                cd terraform-mutable
+                make dev-destroy
+                '''
+               }
+             }
+      }
+    
+     stage('APP-COMPONENTS_CATALOGUE-and-USER') {
+         parallel{
+          stage('CATALOGUE') {
+             steps {
+              dir('catalogue'){
+               sh '''
+                 cd terraform-mutable
+                 make dev-destroy
+                '''
+              }
+             }
+           }
+            stage('USER') {
+              steps {
+                dir('user') {
+                 sh '''
+                  cd terraform-mutable
+                  make dev-destroy
+                 '''
+              }
+             }
+           }
+     //Parallel     
+         }
+     //App-COMPONENT    
+     }
+
+
+        stage('DB-and-ALB') {
+          parallel{
+             stage('DB') {
+                 steps {
+                     dir('terraform') {
+                         sh '''
+                         cd db 
+                         make dev-destroy
+                         '''
+                     }
+                 }
+             }
+
+              stage('ALB') {
+                 steps {
+                     dir('terraform') {
+                         sh '''
+                         cd alb 
+                         make dev-destroy
+                         '''
+                     }
+                 }
+             }
+         }
+      }   
+
+
+     stage('VPC') {
+         steps {
+            dir('terraform') {
+               sh '''
+                 cd vpc 
+                 make dev-destroy
+                 ''' 
+                 } 
+             }
+         }
+
+
+  //stages     
+    } 
+// pipeline    
+}
