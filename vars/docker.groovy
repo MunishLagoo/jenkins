@@ -54,12 +54,9 @@ def call(Map params = [:]) {
                        GIT_TAG=`echo ${GIT_BRANCH} | awk -F / '{print \$NF}'`
                        echo \${GIT_TAG} > version
                        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 608320470413.dkr.ecr.us-east-1.amazonaws.com
-                       echo "build Image"
                        docker build -t ${params.COMPONENT}:\${GIT_TAG} .
                        docker push 608320470413.dkr.ecr.us-east-1.amazonaws.com/${params.COMPONENT}:\${GIT_TAG}
-                       docker tag 608320470413.dkr.ecr.us-east-1.amazonaws.com/${params.COMPONENT}:\${GIT_TAG} 608320470413.dkr.ecr.us-east-1.amazonaws.com/cart:latest
-                       docker push 608320470413.dkr.ecr.us-east-1.amazonaws.com/${params.COMPONENT}:latest
-                      """
+                       """
                 }
             }
 
