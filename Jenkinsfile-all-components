@@ -14,9 +14,7 @@ pipeline {
                 
                 script{
                     addShortText background:'yellow', color:'black',borderColor:'yellow', text:"ENV=${ENV}"
-                    addShortText background:'yellow', color:'black',borderColor:'yellow', text:"APP_VERSION=${APP_VERSION}"
-                    addShortText background:'yellow', color:'black',borderColor:'yellow', text:"COMPONENT=${COMPONENT}"
-                }
+                    }
             }
         }
 
