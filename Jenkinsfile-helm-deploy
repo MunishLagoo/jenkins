@@ -41,7 +41,7 @@ pipeline {
             dir('helm') {
                 sh '''
                    [ ! -z \"\$(kubectl get ns ${ENV} -o name 2>/dev/null)\" ] || kubectl create ns ${ENV}
-                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml --set image.tag=${APP_VERSION} --wait --timeout 5m -n ${ENV}
+                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yaml --set image.tag=${APP_VERSION} --wait --timeout 5m -n ${ENV}
                 '''
                                  
         }
