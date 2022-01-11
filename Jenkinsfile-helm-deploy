@@ -39,11 +39,7 @@ pipeline {
                git branch:'main', url: "https://github.com/MunishLagoo/kubernetes.git"
             }
             
-            dir('helm') {
-                sh '''
-                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml -n ${ENV} --set image.tag = ${APP_VERSION} --wait --timeout 1m
-                '''
-            }            
+                  
         }
     }
    //stages     
