@@ -33,10 +33,10 @@ pipeline {
     stage('App Deployment') {
         steps {
             dir('app') {
-                git branch:'main', url:'https://github.com/MunishLagoo/${COMPONENT}.git'
+                git branch:'main', url: "https://github.com/MunishLagoo/${COMPONENT}.git"
             }
             dir('helm') {
-                git branch:'main', url:'https://github.com/MunishLagoo/kubernetes.git'
+               git branch:'main', url: "https://github.com/MunishLagoo/${COMPONENT}.git"
             }
             
             dir('helm') {
