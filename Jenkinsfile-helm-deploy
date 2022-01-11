@@ -30,7 +30,7 @@ pipeline {
             }
        } 
      
-    stage('App Deployment') {
+    stage('Copy Code') {
         steps {
             dir('app') {
                 git branch:'main', url: "https://github.com/MunishLagoo/${COMPONENT}.git"
@@ -38,14 +38,24 @@ pipeline {
             dir('helm') {
                git branch:'main', url: "https://github.com/MunishLagoo/kubernetes.git"
             }
-            
-            dir('helm') {
+                                 
+        }
+    }
+
+    stage (App Deployment) {
+         when {
+               expression {
+                         sh ([returnStdout: true, script:'kubectl get namespaces ${ENV} | grep ${ENV} || true'])
+                         }
+                 }
+         steps {
+               dir('helm') {
                 sh '''
-                   kubectl create namespace ${ENV}
                    helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml --set image.tag=${APP_VERSION} --wait --timeout 5m -n ${ENV}
                 '''
-            }            
-        }
+            } 
+
+         }        
     }
    //stages     
     }
