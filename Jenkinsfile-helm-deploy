@@ -30,7 +30,7 @@ pipeline {
             }
        } 
      
-    stage('Copy Code') {
+    stage('App Deploy') {
         steps {
             dir('app') {
                 git branch:'main', url: "https://github.com/MunishLagoo/${COMPONENT}.git"
@@ -38,44 +38,14 @@ pipeline {
             dir('helm') {
                git branch:'main', url: "https://github.com/MunishLagoo/kubernetes.git"
             }
+            dir('helm') {
+                sh '''
+                   [ ! -z \"\$(kubectl get ns ${ENV} -o name 2>/dev/null)\" ] || kubectl create ns ${ENV}
+                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml --set image.tag=${APP_VERSION} --wait --timeout 5m -n ${ENV}
+                '''
                                  
         }
     }
-
-stage('create NameSpace'){
-    steps {
-        sh '''
-        [ ! -z \"\$(kubectl get ns ${ENV} -o name 2>/dev/null)\" ] || kubectl create ns ${ENV}
-        '''
-    }
-}
-
-  
-  stage('Helm Deployment') {
-      
-         steps {
-               dir('helm') {
-                sh '''
-                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml --set image.tag=${APP_VERSION} --wait --timeout 5m -n ${ENV}
-                '''
-            } 
-
-         }        
-    }
-    stage('App Deployment without namespace') {
-         when {
-               expression {
-                         sh ([returnStdout: true, script:'kubectl get namespaces ${ENV} | grep ${ENV} || true'])
-                         }
-                 }
-         steps {
-               dir('helm') {
-                sh '''
-                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml --set image.tag=${APP_VERSION} --wait --timeout 5m -n ${ENV}
-                '''
-            } 
-
-         }        
     }
    //stages     
     }
