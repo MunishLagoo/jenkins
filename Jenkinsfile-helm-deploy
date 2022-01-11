@@ -41,7 +41,7 @@ pipeline {
             
             dir('helm') {
                 sh '''
-                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml -n ${ENV} --set image.tag = ${APP_VERSION} --wait --timeout 1m
+                   helm upgrade -i ${COMPONENT} roboshop -f ../app/helm/${ENV}-values.yml -n ${ENV} --set image.tag=${APP_VERSION} --wait --timeout 1m
                 '''
             }            
         }
