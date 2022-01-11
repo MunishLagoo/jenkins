@@ -42,8 +42,12 @@ pipeline {
         }
     }
 
-    stage (AppDeployment) {
-       
+    stage('App Deployment') {
+         when {
+               expression {
+                         sh ([returnStdout: true, script:'kubectl get namespaces ${ENV} | grep ${ENV} || true'])
+                         }
+                 }
          steps {
                dir('helm') {
                 sh '''
