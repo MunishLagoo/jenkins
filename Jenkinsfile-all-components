@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    parameters{
+        string(name: 'ENV', defaultValue: '', description:'which Environment?')
+        string(name: 'APP_VERSION', defaultValue: '', description:'which version of APP?')
+        string(name: 'COMPONENT', defaultValue: '', description:'which APP COMPONENT?')
+    }
+  
+    options {
+        ansiColor('xterm')
+     }
+
+    stages {
+        stage('Labeling Build') {
+            steps {
+                
+                script{
+                    addShortText background:'yellow', color:'black',borderColor:'yellow', text:"ENV=${ENV}"
+                    addShortText background:'yellow', color:'black',borderColor:'yellow', text:"APP_VERSION=${APP_VERSION}"
+                    addShortText background:'yellow', color:'black',borderColor:'yellow', text:"COMPONENT=${COMPONENT}"
+                }
+            }
+        }
+
+            
+    stage('App Deploy') {
+        steps {
+               sh '''
+                   [ ! -z \"\$(kubectl get ns ${ENV} -o name 2>/dev/null)\" ] || kubectl create ns ${ENV}
+                   helm repo add bitnami https://charts.bitnami.com/bitnami
+                   helm repo add stable https://charts.helm.sh/stable
+                   helm repo update
+                   helm install mongo bitnami/mongodb --set auth.enabled=false -n dev
+                   helm install redis bitnami/redis --set auth.enabled=false -n dev
+                   helm install rabbitmq bitnami/rabbitmq -n dev
+                   helm install mysql stable/mysql --set mysqlRootPassword=password -n dev
+                '''
+           }
+       }
+
+   //stages     
+    }
+//pipeline    
+}
